@@ -32,7 +32,39 @@ class SecodViewController: UIViewController {
         super.viewDidLoad()
         
         fetchImage()
+        delay(3) {
+            self.loginAlert()
+        }
         
+    }
+    
+    
+    fileprivate func delay(_ delay: Int, closure: @escaping () -> ()) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds (delay)) {
+            closure ()
+        }
+    }
+    
+        
+        // Add Alert Controller
+    fileprivate func loginAlert() {
+        let ac = UIAlertController(title: "Sign up?", message: "Add your login and password", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+        
+        ac.addAction(ok)
+        ac.addAction(cancelAction)
+        
+        // Add text fields to the alertController
+        ac.addTextField { (usernameTF) in
+            usernameTF.placeholder = "Log in"
+        }
+        
+        ac.addTextField { (userPwTF) in
+            userPwTF.placeholder = "Enter password"
+            userPwTF.isSecureTextEntry = true
+            }
+        self.present(ac, animated: true, completion: nil)
     }
     
     
@@ -41,15 +73,16 @@ class SecodViewController: UIViewController {
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
         
+        
         let queue = DispatchQueue.global(qos: .utility)
         queue.async {
             guard let url = self.imageURL, let imageData = try? Data(contentsOf: url) else { return }
+            
             // Back to main stream
             DispatchQueue.main.async {
                 self.image = UIImage(data: imageData)
             }
         }
-        
     }
 }
 
