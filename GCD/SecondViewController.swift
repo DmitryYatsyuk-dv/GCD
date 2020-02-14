@@ -35,7 +35,6 @@ class SecodViewController: UIViewController {
         delay(3) {
             self.loginAlert()
         }
-        
     }
     
     
