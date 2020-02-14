@@ -40,8 +40,15 @@ class SecodViewController: UIViewController {
         imageURL = URL(string: "https://www.iguides.ru/upload/medialibrary/e11/e116b83e0de7bb33727067c69b6e27ae.jpg")
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
-        guard let url = imageURL, let imageData = try? Data(contentsOf: url) else { return }
-        self.image = UIImage(data: imageData)
+        
+        let queue = DispatchQueue.global(qos: .utility)
+        queue.async {
+            guard let url = self.imageURL, let imageData = try? Data(contentsOf: url) else { return }
+            // Back to main stream
+            DispatchQueue.main.async {
+                self.image = UIImage(data: imageData)
+            }
+        }
         
     }
 }
